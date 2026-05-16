@@ -1,0 +1,18 @@
+{
+  "p10_threshold": 0.6465868208938839,
+  "cooldown_days": 30,
+  "max_doses": 5,
+  "seed_offset": 7000,
+  "AUC_fraction_protected_mean": 0.9607424657534246,
+  "AUC_protprob_p10": 0.7822172200001624,
+  "time_above_threshold_mean": 1.0,
+  "doses_per_patient": 5,
+  "score_robust": 1.2582945197535382,
+  "vacc_days": [
+    0,
+    28,
+    80,
+    137,
+    192
+  ]
+}

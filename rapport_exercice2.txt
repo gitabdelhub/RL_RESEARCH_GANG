@@ -1,0 +1,91 @@
+# Exercice 2 – Compte-rendu
+Swarm of Virtual Patients for Robust Vaccine Schedule Optimization
+ENSIAS – Mai 2026
+
+---
+
+## 1️⃣ État de l'art
+
+### Introduction
+L'optimisation des calendriers vaccinaux représente un défi important en santé publique, notamment à cause de la variabilité des réponses immunitaires entre individus. L'utilisation de simulations informatiques avec des "patients virtuels" offre une approche intéressante pour tester différentes stratégies vaccinales avant leur mise en œuvre réelle.
+
+### Modèles d'anticorps et protection
+Plusieurs études ont modélisé la décroissance des anticorps après vaccination. Khoury et al. (2021) ont proposé une relation entre le titre d'anticorps et la probabilité de protection, ce qui permet de quantifier l'efficacité vaccinale à partir de mesures biologiques.
+
+### Essais in silico et patients virtuels
+Les essais in silico utilisent des cohortes de patients virtuels générés à partir de distributions biologiques réalistes. Cette approche est discutée dans plusieurs travaux récents sur la simulation biomédicale et les essais cliniques virtuels.
+
+### Approches d'optimisation
+Les méthodes classiques de planification vaccinale utilisent la recherche opérationnelle et le contrôle optimal. Plus récemment, le renforcement a été appliqué, mais l'optimisation basée uniquement sur la moyenne peut laisser de côté les individus faiblement répondeurs.
+
+### Perspective du projet
+Notre projet vise à intégrer la robustesse dans l'optimisation, en considérant non seulement la performance moyenne mais aussi les percentiles bas (p10, p5) pour assurer une meilleure équité. L'innovation principale est de proposer un pipeline complet et reproductible combinant simulation de cohortes, baselines comparatives et optimisation robuste.
+
+**Références bibliographiques**
+- Khoury DS, et al. Nature Medicine, 2021
+- Martin et al. (2022) - Pages de RMB 092022
+- Collarino et al. (2021) - jni2021-col5-03-collarino
+
+---
+
+## 2️⃣ Avancement de l'implémentation
+
+**Structure du projet**
+src/
+  models/patient.py          # Modèle de patient virtuel
+  sim/swarm.py               # Simulation d'essaim
+  policies/baselines.py      # Politiques de base
+  policies/robust_search.py  # Recherche robuste
+  report/report_agent.py     # Génération de rapports
+experiments/
+  vaccine_test.py            # Test du modèle
+  run_baselines.py           # Comparaison des baselines
+  run_robust_search.py       # Optimisation robuste
+results/
+  figures/                   # Graphiques générés
+  robust/                    # Résultats robustes
+
+**Scripts développés**
+- vaccine_test.py : Validation du modèle avec 10 patients sur 180 jours
+- run_baselines.py : Comparaison de 3 politiques (fixed 2-doses, periodic booster, threshold adaptive)
+- run_robust_search.py : Recherche automatique de paramètres optimaux avec optimisation mean+p10
+
+**Résultats obtenus**
+
+Policy             | Doses | AUC_mean | AUC_p10 | Score_robust
+-------------------|-------|----------|---------|--------------
+fixed_two_dose     | 2     | 0.6679   | 0.3173  | 0.7900
+periodic_booster   | 3     | 0.8665   | 0.5008  | 1.0671
+robust_best        | 5     | 0.9607   | 0.7822  | 1.2583
+
+La politique robuste montre une amélioration significative de l'équité (AUC_p10) tout en maintenant une bonne performance moyenne.
+
+**Difficultés rencontrées**
+- Problèmes d'imports relatifs entre modules (résolus avec imports absolus)
+- Conversion des types numpy pour JSON/CSV (nécessité de convertir en types Python standard)
+- Temps d'exécution de la recherche robuste (ajustement du nombre d'essais pour le développement)
+
+**Prochaines étapes**
+- Étude d'ablation sur le paramètre lambda de robustesse
+- Analyse de sensibilité avec scénario "fast waning"
+- Génération de figures finales pour présentation
+
+---
+
+## 3️⃣ Avancement des recherches
+
+Les travaux bibliographiques ont porté sur :
+- Les modèles de décroissance des anticorps et leur relation avec la protection
+- Les approches d'essais in silico et patients virtuels
+- Les méthodes d'optimisation robuste pour les politiques vaccinales
+- L'intégration de métriques d'équité (percentiles bas, CVaR)
+
+Les papiers consultés (Martin et al. 2022, Collarino et al. 2021) ont permis de mieux comprendre les enjeux méthodologiques et de positionner notre contribution par rapport à l'existant.
+
+---
+
+**Éléments à rendre – Exercice 2 :**
+- ✅ État de l'art
+- ✅ Implémentation fonctionnelle
+- ✅ Résultats expérimentaux (figures, tableaux)
+- ✅ Analyse et perspectives
